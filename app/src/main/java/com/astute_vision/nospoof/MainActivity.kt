@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.astute_vision.nospoof.navigation.NavigationGraph
 import com.astute_vision.nospoof.ui.theme.NoSpoofTheme
@@ -48,13 +48,15 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraPermissionRequest(onPermissionGranted: @Composable () -> Unit) {
-    val cameraPermissionState = rememberPermissionState(permission = android.Manifest.permission.CAMERA)
+    val cameraPermissionState =
+        rememberPermissionState(permission = android.Manifest.permission.CAMERA)
 
     when (cameraPermissionState.status) {
         PermissionStatus.Granted -> {
             // Разрешение предоставлено: продолжаем к функционалу камеры
             onPermissionGranted()
         }
+
         else -> {
             // Объясняем необходимость разрешения и запрашиваем его снова
             Text("Необходим доступ к камере для продолжения работы")
@@ -66,7 +68,10 @@ fun CameraPermissionRequest(onPermissionGranted: @Composable () -> Unit) {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun PermissionRequestButton(permissionState: PermissionState) {
-    Button(onClick = { permissionState.launchPermissionRequest() }) {
+    Button(
+        onClick = { permissionState.launchPermissionRequest() },
+        modifier = Modifier.wrapContentSize()
+    ) {
         Text("Запросить разрешение на камеру")
     }
 }
